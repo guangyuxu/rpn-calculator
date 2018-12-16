@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="calculatorMain" class="org.gavin.rpn.CalculatorMain">
+        <constructor-arg ref="calculateController"/>
+    </bean>
+
+    <bean id="calculateController" class="org.gavin.rpn.controller.CalculateController" >
+        <constructor-arg ref="operatorFactory"/>
+        <constructor-arg ref="calculatorStack"/>
+    </bean>
+    <bean id="unaryOperator"    class="org.gavin.rpn.service.UnaryOperator">
+        <constructor-arg ref="calculatorStack" />
+        <constructor-arg ref="calculatorHistory" />
+    </bean>
+    <bean id="binaryOperator"    class="org.gavin.rpn.service.BinaryOperator">
+        <constructor-arg ref="calculatorStack" />
+        <constructor-arg ref="calculatorHistory" />
+        <constructor-arg value="15"/>
+        <constructor-arg name="roundingMode">
+            <value type="java.math.RoundingMode">DOWN</value>
+        </constructor-arg>
+    </bean>
+    <bean id="undoOperator"    class="org.gavin.rpn.service.UndoOperator">
+        <constructor-arg ref="calculatorStack" />
+        <constructor-arg ref="calculatorHistory" />
+    </bean>
+    <bean id="clearOperator"    class="org.gavin.rpn.service.ClearOperator">
+        <constructor-arg ref="calculatorStack" />
+        <constructor-arg ref="calculatorHistory" />
+    </bean>
+    <bean id="numberOperator"    class="org.gavin.rpn.service.NumberOperator">
+        <constructor-arg ref="calculatorStack" />
+        <constructor-arg ref="calculatorHistory" />
+    </bean>
+    <bean id="operatorFactory"  class="org.gavin.rpn.service.OperatorFactory">
+        <constructor-arg name="unaryOperator" ref="unaryOperator"/>
+        <constructor-arg name="binaryOperator" ref="binaryOperator"/>
+        <constructor-arg name="undoOperator" ref="undoOperator"/>
+        <constructor-arg name="clearOperator" ref="clearOperator"/>
+        <constructor-arg name="numberOperator" ref="numberOperator"/>
+    </bean>
+
+    <bean id="calculatorStack"    class="org.gavin.rpn.persister.CalculatorStack" >
+        <constructor-arg ref="bigDecimalFormatter"/>
+    </bean>
+    <bean id="calculatorHistory"  class="org.gavin.rpn.persister.CalculatorHistory">
+        <constructor-arg ref="bigDecimalFormatter"/>
+    </bean>
+
+    <bean id="bigDecimalFormatter" class="org.gavin.rpn.util.BigDecimalFormatter">
+        <constructor-arg name="storeScale" value="15"/>
+        <constructor-arg name="presentScale" value="10"/>
+        <constructor-arg name="roundingMode">
+            <value type="java.math.RoundingMode">DOWN</value>
+        </constructor-arg>
+    </bean>
+</beans>
