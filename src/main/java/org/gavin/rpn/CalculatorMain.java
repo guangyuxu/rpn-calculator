@@ -24,7 +24,11 @@ public class CalculatorMain {
     }
 
     private void start() {
+
         Scanner lineScanner = new Scanner(System.in);
+        System.out.println("Welcome to reverse polish notation mode calculator, developed by Gavin Xu");
+        System.out.println("Number, +, -, *, /, undo or clear are acceptable");
+        System.out.println("Input q + enter to quit.");
         while (true) {
             String line = lineScanner.nextLine();
             if(QUIT.equals(line.trim())) break;
